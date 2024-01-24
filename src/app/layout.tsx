@@ -5,9 +5,11 @@ import { Inter } from "next/font/google";
 
 import { environment } from "@/environment.mjs";
 
-import "./style.css";
-
 import { cx } from "@/utilities/classname";
+
+import { Providers } from "./providers";
+
+import "./style.css";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -52,7 +54,9 @@ const RootLayout = ({ children }: RootLayoutProps) => (
     lang="en"
     suppressHydrationWarning
   >
-    <body>{children}</body>
+    <body>
+      <Providers>{children}</Providers>
+    </body>
   </html>
 );
 

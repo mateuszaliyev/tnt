@@ -1,10 +1,11 @@
+import tailwindCssTypography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 import tailwindCssAnimate from "tailwindcss-animate";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 const tailwindCssConfig: Config = {
   content: ["./src/**/*.{js,jsx,mdx,ts,tsx}"],
-  plugins: [tailwindCssAnimate],
+  plugins: [tailwindCssAnimate, tailwindCssTypography],
   theme: {
     extend: {
       fontFamily: {
