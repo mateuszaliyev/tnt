@@ -4,16 +4,16 @@ import type { ReactNode } from "react";
 
 import { ThemeProvider } from "next-themes";
 
-import { TrpcProvider } from "@/client/provider";
+import { ApiProvider } from "@/api/provider";
 
 export type ProvidersProps = {
   children: ReactNode;
 };
 
 export const Providers = ({ children }: ProvidersProps) => (
-  <TrpcProvider>
+  <ApiProvider>
     <ThemeProvider attribute="class" disableTransitionOnChange>
       {children}
     </ThemeProvider>
-  </TrpcProvider>
+  </ApiProvider>
 );
