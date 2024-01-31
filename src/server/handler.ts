@@ -4,6 +4,8 @@ import type { NextRequest } from "next/server";
 
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
+import { environment } from "@/environment.mjs";
+
 import { router } from "./router";
 import { createContext } from "./trpc";
 
@@ -12,7 +14,7 @@ const handler = (request: NextRequest) =>
     createContext: () => createContext({ source: "client" }),
     endpoint: "/api/trpc",
     onError:
-      process.env.NODE_ENV === "development"
+      environment.NEXT_PUBLIC_ENVIRONMENT === "development"
         ? ({ error, path }) => {
             console.error(
               `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,

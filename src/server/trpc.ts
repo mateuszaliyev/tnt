@@ -1,7 +1,5 @@
 import "server-only";
 
-import { notFound } from "next/navigation";
-
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { z } from "zod";
@@ -15,10 +13,6 @@ export type CreateContextOptions = {
 
 export const createContext = async ({ source }: CreateContextOptions) => ({
   database,
-  notFound: (message?: string) => {
-    if (source === "server") notFound();
-    throw new TRPCError({ code: "NOT_FOUND", message });
-  },
   session: await getSession(),
   source,
 });
