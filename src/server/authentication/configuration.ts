@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { AuthOptions, DefaultSession } from "next-auth";
 import githubProvider from "next-auth/providers/github";
 

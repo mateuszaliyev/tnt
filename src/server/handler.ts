@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { NextRequest } from "next/server";
 
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
