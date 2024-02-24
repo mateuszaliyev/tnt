@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { Adapter } from "next-auth/adapters";
 
 import { and, eq } from "drizzle-orm";

@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { AdapterAccount } from "next-auth/adapters";
 
 import { relations } from "drizzle-orm";

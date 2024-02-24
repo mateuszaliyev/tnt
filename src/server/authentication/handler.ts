@@ -1,5 +1,3 @@
-import "server-only";
-
 import nextAuth from "next-auth";
 
 import { configuration } from "./configuration";
