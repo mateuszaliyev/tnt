@@ -9,19 +9,15 @@ import {
   primaryKey,
   text,
   unique,
-  varchar,
 } from "drizzle-orm/pg-core";
 
 import { environment } from "@/environment.mjs";
 
 import { generateId } from "@/utilities/id";
 
-const foreignKey = (name: string) =>
-  varchar(name, { length: environment.NEXT_PUBLIC_ID_LENGTH });
+const foreignKey = (name: string) => text(name);
 
-const id = varchar("id", { length: environment.NEXT_PUBLIC_ID_LENGTH })
-  .primaryKey()
-  .$defaultFn(generateId);
+const id = text("id").primaryKey().$default(generateId);
 
 const timestamp = <Name extends string>(name: Name) =>
   pgTimestamp(name, { mode: "date", withTimezone: true });
@@ -29,7 +25,9 @@ const timestamp = <Name extends string>(name: Name) =>
 const timestamps = {
   createdAt: timestamp("created_at").defaultNow(),
   deletedAt: timestamp("deleted_at"),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 };
 
 const table = pgTableCreator(
@@ -43,25 +41,24 @@ export const accounts = table(
     accessToken: text("access_token"),
     expiresAt: integer("expires_at"),
     idToken: text("id_token"),
-    provider: varchar("provider", { length: 191 }).notNull(),
-    providerAccountId: varchar("provider_account_id", {
-      length: 191,
-    }).notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
     refreshToken: text("refresh_token"),
     scope: text("scope"),
     sessionState: text("session_state"),
-    tokenType: varchar("token_type", { length: 191 }),
-    type: varchar("type", { length: 191 })
-      .$type<AdapterAccount["type"]>()
-      .notNull(),
+    tokenType: text("token_type"),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
     userId: foreignKey("user_id")
       .notNull()
       .references(() => users.id),
     ...timestamps,
   },
   (account) => ({
-    providerUnique: unique().on(account.provider, account.providerAccountId),
-    userIdIndex: index().on(account.userId),
+    accountsProviderUnique: unique().on(
+      account.provider,
+      account.providerAccountId,
+    ),
+    accountsUserIdIndex: index().on(account.userId),
   }),
 );
 
@@ -79,7 +76,7 @@ export const sessions = table(
       .references(() => users.id),
   },
   (session) => ({
-    userIdIndex: index().on(session.userId),
+    sessionsUserIdIndex: index().on(session.userId),
   }),
 );
 
@@ -89,10 +86,10 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 export const users = table("users", {
   id,
-  email: varchar("email", { length: 255 }).notNull(),
+  email: text("email").notNull(),
   emailVerified: timestamp("email_verified"),
   image: text("image"),
-  name: varchar("name", { length: 191 }),
+  name: text("name"),
   ...timestamps,
 });
 
@@ -109,7 +106,7 @@ export const verificationTokens = table(
     token: text("token").notNull(),
   },
   (verificationToken) => ({
-    compoundKey: primaryKey({
+    verificationTokenPrimaryKey: primaryKey({
       columns: [verificationToken.identifier, verificationToken.token],
     }),
   }),
