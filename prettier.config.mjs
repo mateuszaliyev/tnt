@@ -1,3 +1,5 @@
+import packageJson from "./package.json" assert { type: "json" };
+
 /** @type {import("prettier").Config} */
 const prettierConfig = {
   arrowParens: "always",
@@ -9,11 +11,11 @@ const prettierConfig = {
     "^next",
     "<THIRD_PARTY_MODULES>",
     "^(@/app)(.*|$)",
-    "^(@/client)(.*|$)",
+    "^(@/assets)(.*|$)",
     "^(@/components)(.*|$)",
+    "^(@/constants)(.*|$)",
     "^(@/environment)(.*|$)",
     "^(@/hooks)(.*|$)",
-    "^(@/server)(.*|$)",
     "^(@/types)(.*|$)",
     "^(@/utilities)(.*|$)",
     "^[.]",
@@ -22,7 +24,7 @@ const prettierConfig = {
     else result.push(element);
     return result;
   }, /** @type {string[]} */ ([])),
-  importOrderTypeScriptVersion: "5.3.3",
+  importOrderTypeScriptVersion: packageJson.devDependencies.typescript,
   jsxSingleQuote: false,
   plugins: [
     "@ianvs/prettier-plugin-sort-imports",
